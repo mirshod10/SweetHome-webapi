@@ -1,15 +1,25 @@
+using SweetHome.DataAccess.Interfaces.Users;
+using SweetHome.DataAccess.Repositories.Users;
+using SweetHome.Service.Interfaces.Users;
+using SweetHome.Service.Services.Users;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-// Configure the HTTP request pipeline.
+
+builder.Services.AddScoped<IUserService, UserService>();
+
+
+
+var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -17,9 +27,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
